@@ -1,0 +1,15 @@
+{# @var plugin \statikbe\brevo\Brevo\Brevo #}
+{# @var settings \statikbe\brevo\Brevo\models\Settings #}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.autosuggestField({
+    label: "Brevo API"|t('brevo'),
+    instructions: "The Brevo API key."|t('brevo'),
+    id: 'api_key',
+    name: 'api_key',
+    suggestEnvVars: true
+}) }}
+
+{#    value: adapter.api_key #}
+{#    errors: adapter.getErrors('api_key')#}
