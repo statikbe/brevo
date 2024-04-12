@@ -1,15 +1,28 @@
-{# @var plugin \statikbe\brevo\Brevo\Brevo #}
-{# @var settings \statikbe\brevo\Brevo\models\Settings #}
-
 {% import "_includes/forms" as forms %}
 
 {{ forms.autosuggestField({
     label: "Brevo API"|t('brevo'),
     instructions: "The Brevo API key."|t('brevo'),
-    id: 'api_key',
-    name: 'api_key',
-    suggestEnvVars: true
+    id: 'apiKey',
+    name: 'apiKey',
+    suggestEnvVars: true,
+    value: settings.apiKey
 }) }}
 
-{#    value: adapter.api_key #}
-{#    errors: adapter.getErrors('api_key')#}
+{{ forms.autosuggestField({
+    label: "Brevo List Id"|t('brevo'),
+    instructions: "Define your Brevo list id here. If you use multiple list ids, make sure to add them as a hidden input on your form."|t('brevo'),
+    id: 'listId',
+    name: 'listId',
+    suggestEnvVars: true,
+    value: settings.listId
+}) }}
+
+{{ forms.autosuggestField({
+    label: "Brevo Double Opt In Template Id"|t('brevo'),
+    instructions: "Define your Brevo template id here."|t('brevo'),
+    id: 'templateId',
+    name: 'templateId',
+    suggestEnvVars: true,
+    value: settings.templateId
+}) }}

@@ -3,9 +3,18 @@
 namespace statikbe\brevo;
 
 use Craft;
+use craft\base\Event;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\events\RegisterUrlRulesEvent;
+use craft\web\UrlManager;
 use statikbe\brevo\models\Settings;
+use statikbe\brevo\services\SubscribeService;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * statikbe/craft-brevo plugin
@@ -22,42 +31,34 @@ class Brevo extends Plugin
     public bool $hasCpSection = false;
     public bool $hasCpSettings = true;
 
-//    public static function config(): array
-//    {
-//        return [
-//            'components' => [
-//                // Define component configs here...
-//            ],
-//        ];
-//    }
-
     public function init(): void
     {
         parent::init();
 
-        // Defer most setup tasks until Craft is fully initialized
-        Craft::$app->onInit(function() {
-            $this->attachEventHandlers();
-            // ...
-        });
+        $this->setComponents([
+            'subscribeService' => SubscribeService::class,
+        ]);
     }
 
+    /**
+     * @throws InvalidConfigException
+     */
     protected function createSettingsModel(): ?Model
     {
         return Craft::createObject(Settings::class);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws Exception
+     * @throws LoaderError
+     */
     protected function settingsHtml(): ?string
     {
         return Craft::$app->view->renderTemplate('brevo/_settings.twig', [
             'plugin' => $this,
             'settings' => $this->getSettings(),
         ]);
-    }
-
-    private function attachEventHandlers(): void
-    {
-        // Register event handlers here ...
-        // (see https://craftcms.com/docs/4.x/extend/events.html to get started)
     }
 }
